@@ -2,12 +2,12 @@ import './App.css';
 import Header from './Header';
 import Footer from './Footer';
 
-function App() {
+const App:React.FC=() => {
   return (
     <>
-    <Header/>
-    <h1>Hello World From TSX</h1>
-    <Footer/>
+      <Header/>
+      <h1 className='underline'>Hello World From TSX</h1>
+      <Footer/>
     </>
   );
 }
