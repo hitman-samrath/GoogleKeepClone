@@ -30,7 +30,7 @@ const CreateNote = () => {
     }
 
     const checkData=()=>{
-        return note.heading.length===0 || note.content.length===0?alert('Please enter both the title and note correctly'):setData();
+        return note.heading.length===0 || note.content.length===0?alert('Please fill in all the fields'):setData();
     }
 
     return (
