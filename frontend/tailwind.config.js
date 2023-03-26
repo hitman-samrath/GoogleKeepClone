@@ -13,6 +13,9 @@ module.exports = {
                 'githubgreen': '#086d15',
             },
         },
+        screens: {
+            'xs': '400px',
+        },
     },
     plugins: [],
 }
