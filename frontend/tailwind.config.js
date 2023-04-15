@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./src/*.{js,jsx}"],
+    content: ["./src/*.{js,jsx}", "./src/Auth/*.{js,jsx}", "./src//Notes/*.{js,jsx}"],
     theme: {
         extend: {
             fontFamily: {
@@ -12,10 +12,11 @@ module.exports = {
                 'linkedinblue': '#1e4fd6',
                 'githubgreen': '#086d15',
             },
+            screens: {
+                'xs': '400px',
+            },
         },
-        screens: {
-            'xs': '400px',
-        },
+
     },
     plugins: [],
 }
