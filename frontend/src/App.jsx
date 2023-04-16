@@ -1,4 +1,6 @@
 import './App.css';
+import React from 'react';
+import {Route, Routes } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import CreateNote from './Notes/CreateNote';
@@ -6,13 +8,15 @@ import Signup from './Auth/Signup';
 import Login from './Auth/Login';
 
 
-function App() {
+const App=()=> {
     return (
-        <div className='p-0 m-0 box-border'>
+        <div className='p-0 m-0 box-border w-full h-[100vh]'>
             <Header/>
-            <Signup/>
-            <Login/>
-            <CreateNote />
+            <Routes>
+                <Route exact path="/" element={<Login/>}/>
+                <Route exact path="/signup" element={<Signup/>}/>
+                <Route exact path="/create" element={<CreateNote/>}/>
+            </Routes>
             <Footer />
         </div>
     );
