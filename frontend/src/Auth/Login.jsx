@@ -4,27 +4,37 @@ import '../App.css'
 
 const Login = () => {
 
+    const url="http://localhost:3001"
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
-    let navigate=useNavigate();
-    const verifyData = () => {
-        if(user.email === 'admin' && user.password === 'admin'){
-            alert('Login Successful');
-            setUser({
-                email: "",
-                password: ""
-            });
-            navigate('/create');
 
-        }else{
-            alert('Invalid Credentials');
-        }
+    let navigate=useNavigate();
+
+    const verify = async() =>{
+        await fetch(`${url}/login`,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        .then((res)=>res.json())
+        .then((res)=>{
+            if(res.message==='Success'){
+                alert('You have succesfully logged in. Happy Notes Making...')
+                navigate('/create')
+            }
+            else{
+                alert(res.message);
+            }
+        })
+        .catch((err)=>{console.log(err)})
     }
     const checkData = (props) => {
         props.preventDefault();
-        return user.email.length === 0 || user.password.length === 0 ? alert('Please fill in all the fields') : verifyData();
+        return user.email.length === 0 || user.password.length === 0 ? alert('Please fill in all the fields') : verify();
     }
 
     return (

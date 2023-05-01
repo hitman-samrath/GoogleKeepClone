@@ -3,32 +3,52 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../App.css'
 
 const Signup = () => {
-
+    
+    const url="http://localhost:3001"
     const [loginData, setLoginData]=useState({
         name:'',
         email:'',
         password:'',
         confirmPassword:''
     });
+
     let navigate=useNavigate();
 
-    const saveData=()=>{
-        console.log(loginData)
-        navigate('/');
-    }
     const checkData=(e)=>{
         e.preventDefault();
         if(loginData.name.length===0)
             alert('Please enter the name correctly')
         else if(loginData.email.length===0)
             alert('Please enter the email id correctly')
-        else if(loginData.password.length<4)
-            alert('Password should be a minimum of 4 characters')
-        else if(loginData.confirmPassword.length<4 || loginData.confirmPassword!==loginData.password)
+        else if(loginData.password.length<6)
+            alert('Password should be a minimum of 6 characters')
+        else if(loginData.confirmPassword.length<6 || loginData.confirmPassword!==loginData.password)
             alert('Passwords do not match')
         else
-            saveData();
+            verify();
     }
+
+    const verify= async()=>{
+        await fetch(`${url}/signup`,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(loginData)
+        })
+        .then((res)=>res.json())
+        .then((res)=>{
+            if(res.message==='Success'){
+                alert("You have successfully signed up. Please login to continue")
+                navigate('/')
+            }
+            else
+                alert(res.message)
+        })
+        .catch((err)=>{console.log(err)})
+    }
+
+    
 
 
     return (
