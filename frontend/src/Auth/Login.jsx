@@ -1,40 +1,44 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../App.css'
 
 const Login = () => {
 
-    const url="http://localhost:3001"
+    const url = "http://localhost:3001"
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
 
-    let navigate=useNavigate();
+    let navigate = useNavigate();
 
-    const verify = async() =>{
-        await fetch(`${url}/login`,{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
+    const verifyLogin = async () => {
+        await fetch(`${url}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
             },
             body: JSON.stringify(user)
         })
-        .then((res)=>res.json())
-        .then((res)=>{
-            if(res.message==='Success'){
-                alert('You have succesfully logged in. Happy Notes Making...')
-                navigate('/create')
-            }
-            else{
-                alert(res.message);
-            }
-        })
-        .catch((err)=>{console.log(err)})
+            .then((res) => res.json())
+                .then((res) => {
+                    if (res.message === 'Success') {
+                        localStorage.setItem("jwt", res.token);
+                        alert('You have succesfully logged in. Happy Notes Making...')
+                        navigate('/create')
+                    }
+                    else {
+                        console.log(res.message)
+                        alert(res.message);
+                    }
+                })
+                .catch((err) => { console.log(err) })
+            .catch((err)=>{console.log(err)})
     }
     const checkData = (props) => {
         props.preventDefault();
-        return user.email.length === 0 || user.password.length === 0 ? alert('Please fill in all the fields') : verify();
+        return user.email.length === 0 || user.password.length === 0 ? alert('Please fill in all the fields') : verifyLogin();
     }
 
     return (
@@ -46,11 +50,11 @@ const Login = () => {
                         <form className="space-y-4 md:space-y-6">
                             <div>
                                 <h1 className="block mb-2 text-sm font-medium ">Your email</h1>
-                                <input type="email" name="email" value={user.email} id="email" onChange={(e)=>{setUser({...user, [e.target.name]:e.target.value})}} placeholder="name@company.com" className="block w-full p-2.5 border border-gray-300 sm:text-sm rounded-lg "/>
+                                <input type="email" name="email" value={user.email} id="email" onChange={(e) => { setUser({ ...user, [e.target.name]: e.target.value }) }} placeholder="name@company.com" className="block w-full p-2.5 border border-gray-300 sm:text-sm rounded-lg " />
                             </div>
                             <div>
                                 <h1 className="block mb-2 text-sm font-medium text-gray-900">Your Password</h1>
-                                <input type="password" name="password" value={user.password} id="password" onChange={(e)=>{setUser({...user, [e.target.name]:e.target.value})}} placeholder="••••••••" className="block w-full p-2.5 border border-gray-300 sm:text-sm rounded-lg" />
+                                <input type="password" name="password" value={user.password} id="password" onChange={(e) => { setUser({ ...user, [e.target.name]: e.target.value }) }} placeholder="••••••••" className="block w-full p-2.5 border border-gray-300 sm:text-sm rounded-lg" />
                             </div>
                             <div className="flex items-center">
                                 <div className="flex items-start">
