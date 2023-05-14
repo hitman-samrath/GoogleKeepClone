@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Note from './Note';
+import {useJwt }from 'react-jwt'
+import '../App.css'
+
 
 const CreateNote = () => {
 
@@ -60,6 +63,52 @@ const CreateNote = () => {
     const hideNote = () => {
         setVisibility(false);
     }
+
+
+
+
+    const Example = (token) => {
+        const { decodedToken, isExpired } = useJwt(token);
+        if(!isExpired){
+            console.log(decodedToken, isExpired)
+        }
+        // else{
+        //     console.log("not decoded")
+        // }
+        /*
+          If is a valid jwt, 'decodedToken' will be a object
+          it could look like:
+          {
+            "name": "Gustavo",
+            "iat": 1596408259,
+            "exp": 4752168259
+          }
+      
+          'isExpired' will return a boolean
+          true => your token is expired
+          false => your token is not expired
+        */
+    }
+    const Example2=()=>{
+        console.log("EFFECT")
+        const token = localStorage.getItem('jwt');
+        console.log(token)
+        Example(token)
+    }
+    Example2();
+
+
+    // const verifyToken = async (token) => {
+    //     const checkToken = await jwt.verify(token, process.env.jwt_secret)
+    //     return checkToken;
+    // }
+    // useEffect(() => {
+    //     console.log("EFFECT")
+    //     const token = localStorage.getItem('token');
+    //     verifyToken(token)
+
+    // }, [])
+
 
     return (
         <>

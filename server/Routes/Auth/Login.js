@@ -26,7 +26,7 @@ dotenv.config()
 // }
 
 const generateToken = async (user) => {
-    const token = await jwt.sign({ _id: user._id }, process.env.jwt_secret, { expiresIn: '1d' })
+    const token = await jwt.sign({ _id: user._id }, process.env.jwt_secret, { expiresIn: '20000' })
     return token
 }
 // const verifyToken=async (token)=>{
@@ -34,7 +34,7 @@ const generateToken = async (user) => {
 //     return checkToken;
 // }
 
-router.post('/', (req, res) => {
+router.post('/',(req, res) => {
     const { email, password } = req.body
     if (!(email && password))
         return res.status(400).json({ "message": "Please fill in all the fields" })
@@ -49,7 +49,7 @@ router.post('/', (req, res) => {
                             if (correctPassword) {
                                 generateToken(foundUser)
                                     .then((token) => {
-                                        // res.cookie('jwtToken', token, { httpOnly: true });
+                                        res.cookie('jwtToken', token, { httpOnly: true });
                                         // res.redirect('/create');
                                         return res.status(200).json({
                                             "message": "Success",
