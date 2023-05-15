@@ -40,7 +40,7 @@ const Signup = () => {
         .then((res)=>{
             if(res.message==='Success'){
                 alert("You have successfully signed up. Please login to continue")
-                navigate('/')
+                navigate('/login')
             }
             else
                 alert(res.message)
@@ -76,7 +76,7 @@ const Signup = () => {
                             </div>
                             <button type="submit" onClick={checkData} className="w-full outline bg-gray-400 text-white outline-gray-400 hover:text-black hover:bg-white hover:outline-black font-medium rounded-lg text-md px-5 py-2.5 text-center">Sign Up</button>
                             <p className="text-sm font-light text-white0 dark:text-gray-400">
-                                Already have an account? <Link to="/" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</Link>
+                                Already have an account? <Link to="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</Link>
                             </p>
                         </form>
                     </div>

@@ -5,7 +5,7 @@ const port=process.env.PORT || 3001;
 import './database.js'
 import Signup from './Routes/Auth/Signup.js'
 import Login from './Routes/Auth/Login.js';
-import CreateNote from './Routes/Auth/CreateNote.js';
+import CreateNote from './Routes/Notes/CreateNote.js';
 
 app.use(cors())
 app.use(express.json())

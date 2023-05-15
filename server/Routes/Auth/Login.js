@@ -6,35 +6,12 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 
-
-// const isAuth = (req, res, next) => {
-//     const token = req.headers.authorization
-//     if (token) {
-//         const onlyToken = token.slice(7, token.length)
-//         jwt.verify(onlyToken, process.env.JWT_SECRET, (err, decode) => {
-//             if (err) {
-//                 return res.status(401).send({ message: 'Invalid Token' })
-//             }
-//             req.user = token
-//             next()
-//             return
-//         })
-//     }
-//     else {
-//         return res.status(401).send({ message: 'Token is not supplied' })
-//     }
-// }
-
 const generateToken = async (user) => {
-    const token = await jwt.sign({ _id: user._id }, process.env.jwt_secret, { expiresIn: '10000' })
+    const token = await jwt.sign({ _id: user._id }, process.env.jwt_secret, { expiresIn: '1d' })
     return token
 }
-// const verifyToken=async (token)=>{
-//     const checkToken=await jwt.verify(token, process.env.jwt_secret)
-//     return checkToken;
-// }
 
-router.post('/',(req, res) => {
+router.post('/login',(req, res) => {
     const { email, password } = req.body
     if (!(email && password))
         return res.status(400).json({ "message": "Please fill in all the fields" })
@@ -49,8 +26,7 @@ router.post('/',(req, res) => {
                             if (correctPassword) {
                                 generateToken(foundUser)
                                     .then((token) => {
-                                        res.cookie('jwtToken', token, { httpOnly: true });
-                                        // res.redirect('/create');
+                                        // res.cookie('jwtToken', token, { httpOnly: true });
                                         return res.status(200).json({
                                             "message": "Success",
                                             "token": token

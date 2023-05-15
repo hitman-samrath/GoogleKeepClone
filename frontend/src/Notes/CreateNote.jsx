@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Note from './Note';
 import { useJwt } from 'react-jwt'
 import '../App.css'
 import { useNavigate } from 'react-router-dom';
-import VerifyToken from '../Auth/VerifyToken.jsx';
-
-
 
 const CreateNote = () => {
 
-    // VerifyToken();
-
     const url = "http://localhost:3001"
     const [visibility, setVisibility] = useState(false);
-
     const [note, setNote] = useState({
         heading: "",
         content: ""
     });
+    let navigate = useNavigate()
     const [allNotesData, setAllNotesData] = useState([]);
-    let navigate = useNavigate();
+    var userId = "";
+
 
     const addNote = (props) => {
         const { name, value } = props.target;
@@ -28,11 +24,12 @@ const CreateNote = () => {
         })
     }
 
-    const setData = async () => {
-        await fetch(`${url}/create`, {
+    const SetData = async () => {
+        await fetch(`${url}/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'User': userId
             },
             body: JSON.stringify(note)
         })
@@ -60,31 +57,33 @@ const CreateNote = () => {
 
     const checkData = (props) => {
         props.preventDefault();
-        return note.heading.length === 0 || note.content.length === 0 ? alert('Please fill in all the fields') : setData();
+        return note.heading.length === 0 || note.content.length === 0 ? alert('Please fill in all the fields') : SetData();
     }
 
-    const showNote = () => {
+    const showNoteBox = () => {
         setVisibility(true);
     }
-    const hideNote = () => {
+    const hideNoteBox = () => {
         setVisibility(false);
     }
 
     const VerifyToken = () => {
+
         const { decodedToken, isExpired } = useJwt(localStorage.getItem("jwt"));
         if (decodedToken && !isExpired) {
-            console.log(decodedToken, isExpired)
+            const { _id } = decodedToken;
+            userId =_id
         }
         else {
-            console.log("not decoded")
-            navigate('/');
+            console.log("Session Timed Out")
+            navigate('/login');
         }
     }
     VerifyToken();
 
     return (
         <>
-            <div onDoubleClick={hideNote} className='m-auto pt-1 mt-5 w-64 xs:w-80 shadow-lg rounded-xl shadow-slate-400 font-cursive'>
+            <div onDoubleClick={hideNoteBox} className='m-auto pt-1 mt-5 w-64 xs:w-80 shadow-lg rounded-xl shadow-slate-400 font-cursive'>
                 <form>{visibility ?
                     <>
                         <input type="text" name="heading" value={note.heading} placeholder="Add Title" onChange={addNote} className='w-full p-3 m-0 font-bold outline-none required' />
@@ -92,7 +91,7 @@ const CreateNote = () => {
                         <button className='ml-2 mr-1 mb-3 w-10 h-10 shadow-sm shadow-slate-700 rounded-full bg-white text-center text-4xl text-yellow-400 hover:text-white hover:bg-yellow-400 ' onClick={checkData}>+</button>
                     </>
                     :
-                    <input placeholder="Add a note" onClick={showNote} className='w-full p-3 m-0 font-bold outline-none rounded-xl'></input>
+                    <input placeholder="Add a note" onClick={showNoteBox} className='w-full p-3 m-0 font-bold outline-none rounded-xl'></input>
                 }
                 </form>
             </div>

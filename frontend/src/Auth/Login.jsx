@@ -13,11 +13,10 @@ const Login = () => {
     let navigate = useNavigate();
 
     const verifyLogin = async () => {
-        await fetch(`${url}/`, {
+        await fetch(`${url}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // "Authorization": "Bearer " + localStorage.getItem("jwt")
             },
             body: JSON.stringify(user)
         })
@@ -26,7 +25,7 @@ const Login = () => {
                     if (res.message === 'Success') {
                         localStorage.setItem("jwt", res.token);
                         alert('You have succesfully logged in. Happy Notes Making...')
-                        navigate('/create')
+                        navigate('/')
                     }
                     else {
                         console.log(res.message)
