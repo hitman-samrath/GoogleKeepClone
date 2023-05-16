@@ -48,12 +48,9 @@ const Signup = () => {
         .catch((err)=>{console.log(err)})
     }
 
-    
-
-
     return (
         <section className="bg-white">
-            <div className="flex justify-center px-6">
+            <div className="flex justify-center px-6 py-8">
                 <div className="w-full shadow-xl rounded-2xl md:mt-0 sm:max-w-md">
                     <div className="p-6 pt-2 sm:p-8 sm:pt-2">
                         <h1 className="text-xl my-6 font-bold md:text-2xl">Sign up for a new account</h1>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Note from './Note';
 import { useJwt } from 'react-jwt'
 import '../App.css'
@@ -16,6 +16,45 @@ const CreateNote = () => {
     const [allNotesData, setAllNotesData] = useState([]);
     var userId = "";
 
+    useEffect(() => {
+        const getNotes=async()=>{
+            await fetch(`${url}/getnotes`, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'jwt':localStorage.getItem('jwt')
+                }
+            })
+            .then((res)=>res.json())
+                .then((res)=>{
+                    if(res.message==="Success"){
+                        setAllNotesData(res.data)
+                        console.log(allNotesData)
+                    }
+                    else{
+                        console.log(res.message)
+                    }
+                })
+                .catch((err)=>{console.log(err)})
+            .catch((err)=>{console.log(err)})
+        }
+        getNotes()
+    }, [])
+
+    const VerifyToken = () => {
+        const { decodedToken, isExpired } = useJwt(localStorage.getItem("jwt"));
+        if (decodedToken && !isExpired) {
+            const { _id } = decodedToken;
+            userId =_id
+        }
+        else {
+            console.log("Session Timed Out")
+            navigate('/login');
+        }
+    }
+    VerifyToken();
+
+
 
     const addNote = (props) => {
         const { name, value } = props.target;
@@ -25,11 +64,11 @@ const CreateNote = () => {
     }
 
     const SetData = async () => {
-        await fetch(`${url}/`, {
+        await fetch(`${url}/savenotes`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'User': userId
+                'user': userId
             },
             body: JSON.stringify(note)
         })
@@ -67,19 +106,8 @@ const CreateNote = () => {
         setVisibility(false);
     }
 
-    const VerifyToken = () => {
-
-        const { decodedToken, isExpired } = useJwt(localStorage.getItem("jwt"));
-        if (decodedToken && !isExpired) {
-            const { _id } = decodedToken;
-            userId =_id
-        }
-        else {
-            console.log("Session Timed Out")
-            navigate('/login');
-        }
-    }
-    VerifyToken();
+    
+    
 
     return (
         <>

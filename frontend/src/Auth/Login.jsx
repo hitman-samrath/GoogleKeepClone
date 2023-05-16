@@ -42,7 +42,7 @@ const Login = () => {
 
     return (
         <section className="bg-white">
-            <div className="flex justify-center px-6 py-8">
+            <div className="flex justify-center px-6 py-16">
                 <div className="w-full shadow-xl rounded-2xl md:mt-0 sm:max-w-md">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl my-6 font-bold md:text-2xl">Sign in to your account</h1>
